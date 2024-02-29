@@ -18,7 +18,7 @@ public class Wallet {
         }
     }
 
-    public void depositToCard(String cardName, double depositAmount) {
+    public void deposit(String cardName, double amount) {
         Cards targetCard = null;
         for (Cards card : cards) {
             if (card.getCardName().equals(cardName)) {
@@ -28,18 +28,21 @@ public class Wallet {
                 System.out.println("Tidak dapat menemukan kartu dengan nama " + cardName);
             }
         }
-        if (depositAmount == 50000.0 || depositAmount == 100000.0) {
+        if (amount % 50000.0 == 0 || amount % 100000.0 == 0) {
             if (targetCard != null) {
                 if (cash.contains(100000.0)) {
                     double cashToTake = 0.0;
                     cash.remove(cashToTake);
 
-                    double newBalance = targetCard.getBalance() + depositAmount;
+                    double newBalance = targetCard.getBalance() + amount;
                     targetCard.setBalance(newBalance);
 
                     System.out.println("Deposit berhasil. Saldo baru pada kartu " + cardName + ": " + newBalance);
-                } else if (countOfFifty() >= depositAmount / 50000.0){
-                    double newBalance = targetCard.getBalance() + depositAmount;
+                } else if (countOfFifty() >= amount / 50000.0){
+                    for (int i = 0; i < amount / 50000.0; i++) {
+                        cash.remove(50000.0);
+                    }
+                    double newBalance = targetCard.getBalance() + amount;
                     targetCard.setBalance(newBalance);
 
                     System.out.println("Deposit berhasil. Saldo baru pada kartu " + cardName + ": " + newBalance);
@@ -61,45 +64,44 @@ public class Wallet {
         return count;
     }
 
-    public void disableCard(String cardName) {
+    public void withdraw(String cardName, double amount) {
+        Cards targetCard = null;
         for (Cards card : cards) {
             if (card.getCardName().equals(cardName)) {
-                card.setActive(false);
-                System.out.println("Kartu " + cardName + " dinonaktifkan.");
-                return;
+                targetCard = card;
+                break;
             }
         }
-        System.out.println("Kartu dengan nama " + cardName + " tidak ditemukan.");
-    }
-    public void enableCard(String cardName) {
-        for (Cards card : cards) {
-            if (card.getCardName().equals(cardName)) {
-                card.setActive(true);
-                System.out.println("Kartu " + cardName + " diaktifkan.");
-                return;
+
+        if (targetCard != null) {
+            if (amount % 50000.0 == 0) {
+                for (int i = 0; i < amount / 50000.0; i++) {
+                    cash.add(50000.0);
+                }
+
+                double newBalance = targetCard.getBalance() - amount;
+                targetCard.setBalance(newBalance);
+
+                System.out.println("Withdraw berhasil. Saldo baru pada kartu " + cardName + ": " + newBalance);
+            } else {
+                System.out.println("Tidak dapat melakukan withdraw. Jumlah harus kelipatan 50000.0.");
             }
+        } else {
+            System.out.println("Tidak dapat menemukan kartu dengan nama " + cardName);
         }
-        System.out.println("Kartu dengan nama " + cardName + " tidak ditemukan.");
     }
 
-    public void displayActiveCards() {
-        System.out.println("Kartu-kartu aktif:");
-        for (Cards card : cards) {
-            if (card.isActive()) {
-                System.out.println(" - " + card.getCardName() + ": " + card.getBalance());
-            }
-        }
+    public void addCard(String cardName) {
+        Cards newCard = new Cards(cardName, 0.0);
+        cards.add(newCard);
+        System.out.println("Kartu " + cardName + " berhasil ditambahkan dengan saldo awal 0.0");
     }
-//    public void withdraw(double amount) {
-//        if (cards.get())
-//    }
-    public void deposit(double amount) {
-        if (totalCash() >= amount) {
-            cash.remove(amount);
-        } else {
-            System.out.println("Saldo tidak mencukupi.");
-        }
+    public void addCard(String cardName, double balance) {
+        Cards newCard = new Cards(cardName, balance);
+        cards.add(newCard);
+        System.out.println("Kartu " + cardName + " berhasil ditambahkan dengan saldo awal " + balance);
     }
+
     public void displayWalletInfo() {
         System.out.println("Info Dompet " + name);
         System.out.println("Kartu-kartu:");
