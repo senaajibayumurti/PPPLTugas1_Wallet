@@ -1,37 +1,23 @@
 package org.example;
 
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 class WalletTest {
     Wallet walletTest01 = new Wallet(
-            "Owner01", (new Cards("card01", 2000000.0)),(new double[]{1000.0, 5000.0, 20000.0, 20000.0})
+            "Owner01",
+            (new Cards("card01", 2000000.0)),
+            (new double[]{1000.0, 5000.0, 20000.0, 20000.0})
     );
-    Wallet walletTest02 = new Wallet(
-            "Owner02",
-            (new Cards("card01", 2100000.0)),
-            (new double[]{1000.0, 20000.0, 50000.0, 50000.0, 50000.0})
-    );
-
 
     @Test
     public void test01 (){
-        walletTest01.deposit( "card01", 100000.0);
-    }
-
-    @Test
-    public void test02 (){
-        walletTest02.displayWalletInfo();
-        walletTest02.deposit("card01", 150000.0);
-        walletTest02.displayWalletInfo();
-        walletTest02.withdraw("card01",60000.0);
-        walletTest02.displayWalletInfo();
-        walletTest02.withdraw("card01",100000.0);
-        walletTest02.displayWalletInfo();
-    }
-
-    @Test
-    public void test03(){
-        System.out.println(walletTest01.countOfFifty());
-        System.out.println(walletTest02.countOfFifty());
+        walletTest01.displayWalletInfo();
+        walletTest01.deposit("card01", 150000.0);
+        walletTest01.withdraw("card01",100000.0);
+        walletTest01.addCard("card02");
+        walletTest01.displayWalletInfo();
+        walletTest01.removeCard("card02");
+        walletTest01.displayWalletInfo();
     }
 }
