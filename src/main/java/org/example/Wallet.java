@@ -107,7 +107,7 @@ public class Wallet {
         for (double cashAmount : cash) {
             System.out.println(" - " + cashAmount);
         }
-        System.out.println("Total Uang di Dompet: " + totalCash());
+        System.out.println("Total Uang di Dompet: " + getTotalCash());
     }
     public int countOfFifty(){
         int count = 0;
@@ -118,7 +118,7 @@ public class Wallet {
         }
         return count;
     }
-    public double totalCash() {
+    public double getTotalCash() {
         double totalCash = 0.0;
         for (double cashAmount : cash) {
             totalCash += cashAmount;
