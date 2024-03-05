@@ -6,6 +6,7 @@ public class Cards {
 
     public Cards(String cardName) {
         this.cardName = cardName;
+        this.balance = 0.0;
     }
 
     public Cards(String cardName, double balance) {
