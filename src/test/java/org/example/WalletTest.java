@@ -1,21 +1,36 @@
 package org.example;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class WalletTest {
-    Wallet walletTest01 = new Wallet(
-            "owner01",
-            Arrays.asList(new Cards("card01", 2000000.0)),
-            (new double[]{20000.0, 50000.0})
-    );
+
+    static Wallet walletTest01;
+
+    @BeforeEach
+    void initEach() {
+        walletTest01 = new Wallet(
+                "owner01",
+                Arrays.asList(new Cards("card01", 2000000.0)),
+                new double[]{20000.0, 50000.0}
+        );
+        System.out.println("@Beforeeach dijalankan");
+    }
+
+    @AfterAll
+    static void cleanAll() {
+        System.out.println("@Afterall dijalankan");
+    }
+
     @Test
-    public void testDataOwner(){
+    public void testDataOwner() {
+        System.out.println("testDataOwner dijalankan");
         assertEquals("owner01", walletTest01.getName());
         assertEquals("card01", walletTest01.getCards().get(0).getCardName());
         assertNotEquals(1000.0, walletTest01.getTotalCash());
@@ -23,7 +38,8 @@ class WalletTest {
     }
 
     @Test
-    public void testCard(){
+    public void testCard() {
+        System.out.println("testCard dijalankan");
         walletTest01.addCard("card02");
 
         assertTrue(walletTest01.getLastCard().getCardName().contains("card02"));
@@ -36,26 +52,35 @@ class WalletTest {
     }
 
     @Test
-    public void testDeposit(){
+    public void testDeposit() {
+        System.out.println("testDeposit dijalankan");
         assertEquals(70000.0, walletTest01.getTotalCash());
 
-        walletTest01.deposit("card01",50000.0);
         List<Cards> wallet01Cards = walletTest01.getCards();
-
+        walletTest01.deposit("card01", 50000.0);
+        walletTest01.deposit("card01", 20000.0);
         assertEquals(2050000.0, wallet01Cards.get(0).getBalance());
-        walletTest01.displayWalletInfo();
+        assertEquals(2050000.0, wallet01Cards.get(0).getBalance());
     }
 
     @Test
-    public void testWithdraw(){
-        walletTest01.withdraw("card01", 50000.0);
-
-        assertEquals(120000.0, walletTest01.getTotalCash());
-        assertTrue(walletTest01.getCash().size() == 3);
+    public void testWithdraw() {
+        System.out.println("testWithdraw dijalankan");
 
         List<Cards> wallet01Cards = walletTest01.getCards();
+        walletTest01.withdraw("card01", 50000.0);
+        assertEquals(120000.0, walletTest01.getTotalCash());
+
+        walletTest01.withdraw("card01", 70000.0);
+        assertEquals(120000.0, walletTest01.getTotalCash());
+
+        walletTest01.withdraw("card01", 3000000.0);
+        assertEquals(120000.0, walletTest01.getTotalCash());
+
 
         assertEquals(1950000.0, wallet01Cards.get(0).getBalance());
+        walletTest01.displayWalletInfo();
+        assertTrue(walletTest01.getCash().size() == 5);
         walletTest01.displayWalletInfo();
     }
 }
