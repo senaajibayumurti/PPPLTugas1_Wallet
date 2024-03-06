@@ -58,15 +58,19 @@ public class Wallet {
             }
         }
         if (targetCard != null) {
-            if (amount % 50000.0 == 0) {
-                for (int i = 0; i < amount / 50000.0; i++) {
-                    cash.add(50000.0);
-                }
+            if (targetCard.getBalance() >= amount){
+                if (amount % 50000.0 == 0) {
+                    for (int i = 0; i < amount / 50000.0; i++) {
+                        cash.add(50000.0);
+                    }
 
-                double newBalance = targetCard.getBalance() - amount;
-                targetCard.setBalance(newBalance);
+                    double newBalance = targetCard.getBalance() - amount;
+                    targetCard.setBalance(newBalance);
+                } else {
+                    System.out.println("Tidak dapat melakukan withdraw. Jumlah harus kelipatan 50000.0.");
+                }
             } else {
-                System.out.println("Tidak dapat melakukan withdraw. Jumlah harus kelipatan 50000.0.");
+                System.out.println("Tidak dapat melakukan withdraw. Saldo tidak mencukupi.");
             }
         } else {
             System.out.println("Tidak dapat menemukan kartu dengan nama " + cardName);
