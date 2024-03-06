@@ -1,8 +1,7 @@
 package org.example;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.Arrays;
@@ -20,12 +19,14 @@ class WalletTest {
                 Arrays.asList(new Cards("card01", 2000000.0)),
                 new double[]{20000.0, 50000.0}
         );
-        System.out.println("@Beforeeach dijalankan");
+        System.out.println("@BeforeEach dijalankan");
     }
 
-    @AfterAll
-    static void cleanAll() {
-        System.out.println("@Afterall dijalankan");
+    @AfterEach
+    void cleanEach() {
+        walletTest01 = null;
+
+        System.out.println("@AfterEach dijalankan\n");
     }
 
     @Test
@@ -61,6 +62,7 @@ class WalletTest {
         walletTest01.deposit("card01", 20000.0);
         assertEquals(2050000.0, wallet01Cards.get(0).getBalance());
         assertEquals(2050000.0, wallet01Cards.get(0).getBalance());
+        walletTest01.displayWalletInfo();
     }
 
     @Test
@@ -79,8 +81,16 @@ class WalletTest {
 
 
         assertEquals(1950000.0, wallet01Cards.get(0).getBalance());
+        assertTrue(walletTest01.getCash().size() == 3);
         walletTest01.displayWalletInfo();
-        assertTrue(walletTest01.getCash().size() == 5);
+    }
+
+    @Test
+    public void testRemoveCard() {
+        System.out.println("testRemoveCard dijalankan");
+
+        walletTest01.removeCard("card01");
+        assertFalse(walletTest01.getCards().contains(new Cards("card01")));
         walletTest01.displayWalletInfo();
     }
 }
