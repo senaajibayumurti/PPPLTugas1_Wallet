@@ -8,10 +8,9 @@ public class Wallet {
     private List<Cards> cards;
     private List<Double> cash;
 
-    public Wallet(String name,Cards cards, double[] cash) {
+    public Wallet(String name,List<Cards> cards, double[] cash) {
         this.name = name;
-        this.cards = new ArrayList<>();
-        this.cards.add(cards);
+        this.cards = new ArrayList<>(cards);
         this.cash = new ArrayList<>();
         for (double i : cash){
             this.cash.add(i);
@@ -125,6 +124,14 @@ public class Wallet {
         }
         return totalCash;
     }
+    public Cards getLastCard() {
+        if (!cards.isEmpty()) {
+            return cards.get(cards.size() - 1);
+        } else {
+            return null;
+        }
+    }
+
 
     public String getName() {
         return name;
